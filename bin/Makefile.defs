@@ -1,0 +1,100 @@
+#########################################################################
+# File:        Makefile.defs
+# Description: Generic definitions used by makefiles of Impulse RSIM.
+# Author:      Lixin Zhang
+# Created:     02-06-1999
+# Modified:    02-06-1999
+#########################################################################
+
+OSTYPE = $(shell uname -s)
+
+ifeq    ($(OSTYPE),IRIX)
+        MACHINE   = sgi
+        DEPEND    = /usr/bin/X11/makedepend
+        CC        = cc
+        C++       = CC
+        AR        = 
+        RANLIB    = 
+	LD        = CC
+	CPPFLAG   = 
+	ASFLAGS	  = -n32 -cpp
+	CDFLAGS   = -woff 1185,1174,1209,1275,3201,3625 -signed -fullwarn -n32 -g -DDEBUG -DNOSTAT
+	C++DFLAGS = -woff 1185,1174,1209,1275,3201,3625 -LANG: libc_in_namespace_std=OFF -signed -fullwarn -n32 -g -DDEBUG -DNOSTAT
+	CFLAGS    = -woff 1185,1174,1209,1275,3201,3625 -signed -fullwarn -n32 -Ofast -DNOSTAT
+	C++FLAGS  = -woff 1185,1174,1209,1275,3201,3625 -LANG: libc_in_namespace_std=OFF -signed -fullwarn -n32 -Ofast -DNOSTAT
+        LDFLAGS   = -n32 -IPA
+	DEPLIBS   = -lm -lelf
+endif
+
+
+ifeq    ($(OSTYPE),IRIX64)
+        MACHINE   = sgi
+        DEPEND    = /usr/bin/X11/makedepend
+        CC        = cc
+        C++       = CC
+        AR        = 
+        RANLIB    = 
+	LD        = CC
+	CPPFLAG   = 
+	ASFLAGS	  = -n32 -cpp
+	CDFLAGS   = -woff 1185,1174,1209,1275,3201,3625 -signed -fullwarn -n32 -g -DDEBUG -DNOSTAT
+	C++DFLAGS = -woff 1185,1174,1209,1275,3201,3625 -signed -fullwarn -n32 -g -DDEBUG -DNOSTAT
+	CFLAGS    = -woff 1185,1174,1209,1275,3201,3625 -signed -fullwarn -n32 -Ofast -DNOSTAT
+	C++FLAGS  = -woff 1185,1174,1209,1275,3201,3625 -signed -fullwarn -n32 -Ofast -DNOSTAT
+        LDFLAGS   = -n32 -IPA
+	DEPLIBS   = -lm -lelf
+endif
+
+
+ifeq    ($(OSTYPE),SunOS)
+        MACHINE   = sparc
+        DEPEND    = makedepend
+	AS	  = /usr/ccs/bin/as
+	CC        = /opt/SUNWspro/bin/cc
+	C++       = /opt/SUNWspro/bin/CC
+        AR        = /usr/local/gnu/bin/ar
+        RANLIB    = /usr/local/gnu/bin/ranlib
+	LD        = /opt/SUNWspro/bin/CC
+	CPPFLAG   =
+	ASFLAGS	  = -xarch=v8plus -P
+	CDFLAGS   = -xtarget=native -xarch=v8plus -g  +w2 -dalign -v -DDEBUG -DNOSTAT
+	C++DFLAGS = -xtarget=native -xarch=v8plus -g -dalign -noex -DDEBUG -DNOSTAT
+	CFLAGS    = -xtarget=native -xarch=v8plus -xO5 -xbuiltin=%all -xlibmil +w2 -dalign -v -unroll=4 -DNOSTAT
+	C++FLAGS  = -xtarget=native -xarch=v8plus -xO5 -xlibmil -dalign -noex -unroll=4 -DNOSTAT
+        LDFLAGS   =
+	DEPLIBS   = -lfast -lm -lelf -lsocket -lnsl
+endif
+
+
+ifeq    ($(OSTYPE),Linux)
+# libelf.h is usually installed in /usr/local/include - gcc seems to find it,
+# but makedepend doesn't seem to...
+	LIBELFDIR = /usr/local/
+	AS	  = gcc -c -x assembler-with-cpp
+        MACHINE   = linux
+        DEPEND    = makedepend
+        CC        = gcc
+        C++       = g++
+        AR        = ar
+        RANLIB    = ranlib
+        LD        = g++
+        CPPFLAG   = -DUSESIGNAL -DENDIAN_SWAP -DPAD_INSTANCE -DPAD_STAT64 -I$(LIBELFDIR)/include
+        CDFLAGS   = -g -march=i486 -DDEBUG_PROC -DNOSTAT
+        C++DFLAGS = -g -march=i486 -DDEBUG_PROC -DNOSTAT
+        CFLAGS    = -g -O3 -march=i486 -DNOSTAT
+        C++FLAGS  = -g -O3 -march=i486 -DNOSTAT
+        LDFLAGS   = -L$(LIBELFDIR)/lib
+        DEPLIBS   = -lm -lelf
+endif
+
+INCLUDE  = -I..
+BINDIR   = ../../bin/$(OSTYPE)
+OBJDIR   = Objs/$(OSTYPE)
+CPPFLAGS = $(CPPFLAG) -D$(MACHINE) $(INCLUDE) $(USERFLAGS)
+
+ifdef TRACE
+CPPFLAGS += -DTRACE=$(TRACE)
+endif
+
+
+

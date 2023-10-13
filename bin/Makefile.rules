@@ -1,0 +1,154 @@
+#########################################################################
+# File:        Makefile.rules
+# Description: Generic makefile for Impulse RSIM. 
+# Author:      Lixin Zhang
+# Created:     02-06-1999
+# Modified:    02-06-1999
+#
+# Either $(LIBRARY) or $(OBJECT) has to be set before including this one.  
+#
+#########################################################################
+
+########################################################################
+## For optimized binaries                                             ##
+########################################################################
+
+ifdef LIBRARY
+	LIBRARY := $(OBJDIR)/$(LIBRARY)
+endif
+
+ifdef OBJECT
+	OBJECT  := $(OBJDIR)/$(OBJECT)
+endif
+
+
+TARGET  := $(LIBRARY) $(OBJECT)
+DTARGET := $(LIBRARY) $(OBJECT)_d
+OBJS    := $(addprefix $(OBJDIR)/,$(SRCS:.c=.o))
+OBJS    := $(OBJS:.cc=.o)
+OBJS    := $(OBJS:.s=.o)
+
+
+default: $(TARGET)
+
+$(LIBRARY): $(OBJS)
+	-mv -f $@ $(OBJDIR)/Old
+ifeq ($(OSTYPE),IRIX64)
+	$(C++) -ar -o $@ $^
+else
+ifeq ($(OSTYPE),IRIX)
+	$(C++) -ar -o $@ $^
+else
+ifeq ($(OSTYPE),SunOS)
+	$(C++) -xar -o $@ $^
+else
+	$(AR) crv $@ $^
+	$(RANLIB) $@
+endif
+endif
+endif
+
+
+$(OBJECT): $(OBJS)
+	-mv -f $@ $(OBJDIR)/Old
+	$(LD) $(LDFLAGS) -r -o $@ $^
+
+
+
+########################################################################
+## For binaries with debug information                                ##
+########################################################################
+
+DLIBY   = $(LIBRARY:.a=_d.a)
+DOBJT   = $(OBJECT:.o=_d.o)
+DTARGET = $(DLIBY) $(DOBJT)
+DOBJS   = $(OBJS:.o=_d.o)
+
+debug: $(DTARGET)
+all: $(TARGET) $(DTARGET)
+
+$(DLIBY): $(DOBJS)
+	-mv -f $@ $(OBJDIR)/Old
+ifeq ($(OSTYPE),IRIX64)
+	$(C++) -ar -o $@ $^
+else
+ifeq ($(OSTYPE),IRIX)
+	$(C++) -ar -o $@ $^
+else
+ifeq ($(OSTYPE),SunOS)
+	$(C++) -xar -o $@ $^
+else
+	$(AR) crv $@ $^
+	$(RANLIB) $@
+endif
+endif
+endif
+
+$(DOBJT): $(DOBJS)
+	-mv -f $@ $(OBJDIR)/Old
+	$(LD) $(LDFLAGS) -r -o $@ $^
+
+
+
+#########################################################################
+# Install the library or the object file into bin/ directory.          ##
+#########################################################################
+
+BINTARGET = $(BINDIR)/$(notdir $(TARGET)) $(BINDIR)/$(notdir $(DTARGET))
+install: $(BINTARGET)
+$(BINTARGET): $(TARGET) $(DTARGET)
+	-mv -f $(BINTARGET) $(BINDIR)/Old
+	cp $(TARGET) $(DTARGET) $(BINDIR)
+
+
+
+#########################################################################
+# standard rules                                                       ##
+#########################################################################
+
+.SUFFIXES: .c .o .cc .s
+$(OBJDIR)/%_d.o:%.c
+	$(CC) $(CPPFLAGS) $(CDFLAGS) -c -o $@ $*.c
+$(OBJDIR)/%_d.o:%.cc
+	$(C++) $(CPPFLAGS) $(C++DFLAGS) -c -o $@ $*.cc
+$(OBJDIR)/%_d.o:%.s
+	$(AS) $(CPPFLAGS) $(ASFLAGS) -o $@ $*.s
+$(OBJDIR)/%.o:%.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $*.c
+$(OBJDIR)/%.o:%.cc
+	$(C++) $(CPPFLAGS) $(C++FLAGS) -c -o $@ $*.cc
+$(OBJDIR)/%.o:%.s
+	$(AS) $(CPPFLAGS) $(ASFLAGS) -o $@ $*.s
+
+
+clean:
+	-rm -f $(OBJS)
+	-rm -f $(DOBJS)
+
+
+clobber: clean
+	-rm -f $(TARGET)
+	-rm -f $(DTARGET)
+	-rm -fr $(OBJDIR)/SunWS_cache
+	-rm -fr $(OBJDIR)/depend
+
+TAGS: $(SRCS)
+	etags -T ../*/*.c ../*/*.cc ../*/*.h ../*/*.hh
+
+#########################################################################
+# Automatically update depend file                                     ##
+#########################################################################
+
+SHELL = sh
+.PHONY: depend
+depend $(OBJDIR)/depend: $(SRCS)
+	mkdir -p $(OBJDIR)
+	@touch $(OBJDIR)/.depend
+	$(DEPEND) -f $(OBJDIR)/.depend -- $(CPPFLAGS) -- $(SRCS)
+	@sed -e 's/^.*\.o:/Objs\/$(OSTYPE)\/&/' \
+		$(OBJDIR)/.depend > $(OBJDIR)/depend
+	@sed -e 's/\.o:/_d\.o:/' $(OBJDIR)/depend > $(OBJDIR)/.depend
+	@cat $(OBJDIR)/.depend >> $(OBJDIR)/depend  
+	@rm -f $(OBJDIR)/.depend $(OBJDIR)/.depend.bak
+
+include $(OBJDIR)/depend

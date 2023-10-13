@@ -1,0 +1,284 @@
+##### Global Parameters #####
+
+numnodes		   1	# number of nodes
+numcpus			   1	# number of processors per node
+kernel	  ../../lamix/lamix	# Lamix kernel filename
+memory			512M	# size of memory, affects only file cache size
+
+
+
+##### CPU Parameters #####
+
+clkperiod		5000	# CPU clock period in picoseconds
+
+activelist		  64	# number of active instruction, ROB size
+fetchqueue		   8	# size of fetch queue/instruction buffer
+fetchrate		   4	# instructions fetched per cycle
+decoderate		   4	# instructions decoded per cycle
+graduationrate		   4	# instructions graduated per cycle
+flushrate		   4	# instructions flushed per cycle after except.
+
+maxaluops		  16	# maximum number of pending ALU instructions
+maxfpuops		  16	# maximum number of pending FPU instructions
+maxmemops		  16	# maximum number of pending memory instructions
+
+shadowmappers		   8	# number of unresolved branches
+
+bpbtype			2bit	# type of branch predictor (2bit,agree,static)
+bpbsize			 512	# size of branch predictor buffer
+rassize			   4	# size of return address stack
+
+latint			   1	# integer instruction latency
+latshift		   1	# integer shift latency
+latmul			   3	# integer multiply latency
+latdiv			   9	# integer divide latency
+latflt			   3	# floating point operation latency
+latfconv		   4	# FP conversion latency
+latfmov			   1	# FP move latency
+latfdiv			  10	# FP divide latency
+latfsqrt		  10	# FP sqare root latency
+
+repint			   1	# integer instruction repeat rate
+repshift		   1	# integer shift repeat rate
+repmul			   1	# integer multiply repeat rate
+repdiv			   1	# integer divide repeat rate
+repflt			   1	# FP instruction repeat rate
+repfconv		   2	# FP conversion repeat rate
+repfmov			   1	# FP move repeat rate
+repfdiv			   6	# FP divide repeat rate
+repfsqrt		   6	# FP suare root repeat rate
+
+numaddrs		   1	# number of address generation units
+numalus			   2	# number of integer functional units
+numfpus			   2	# number of FP functional units
+
+storebuffer		  16	# size of processor store buffer
+
+dtlbtype	      direct	# data TLB type (direct, set_assoc,
+				#                fully_assoc,perfect)
+dtlbsize		 128	# data TLB size
+dtlbassoc		   1	# data TLB associativity
+dtlbtag			   0    # enable tagged data TLB
+itlbtype	      direct	# instr.TLB type (direct, set_assoc,
+  				#                 fully_assoc, perfect)
+itlbsize		 128	# instr. TLB size
+itlbassoc		   1	# instr. TLB associativity
+itlbtag			   0	# enable tagged instr. TLB
+
+
+
+##### Cache Parameters #####
+
+cache_frequency		   1	# frequency relative to CPU core
+cache_collect_stats	   1	# collect statistics
+cache_mshr_coal		   8	# max. number of misses coalesced into a MSHR
+
+L1IC_perfect		   0	# perfect L1 I-cache (100% hit rate)
+L1IC_prefetch		   0	# L1 I-cache prefetches next line on miss
+L1IC_size		  32	# L1 I-cache cache size in kbytes
+L1IC_assoc		   1	# L1 I-Cache associativity
+L1IC_line_size		  32	# L1 I-cache line size in bytes
+L1IC_ports		   1	# number of L1 I-cache ports
+L1IC_tag_latency	   1	# L1 I-cache access latency
+L1IC_tag_repeat		   1	# L1 I-cache access repeat rate
+L1IC_mshr		   8	# L1 I-cache miss status holding register size
+
+L1DC_perfect		   0	# perfect L1 D-cache (100% hit rate)
+L1DC_prefetch		   0	# L1 D-cache prefetches next line on miss
+L1DC_writeback		   1	# L1 D-cache writeback/writethrough?
+L1DC_wbuf_size		   8	# size of L1 D-cache write bufer
+L1DC_size		  32	# L1 D-cache cache size in kbytes
+L1DC_assoc		   1	# L1 D-Cache associativity
+L1DC_line_size		  32	# L1 D-cache line size in bytes
+L1DC_ports		   1	# number of L1 D-cache ports
+L1DC_tag_latency	   1	# L1 D-cache access latency
+L1DC_tag_repeat		   1	# L1 D-cache access repeat rate
+L1DC_mshr		   8	# L1 D-cache miss status holding register size
+
+L2C_perfect		   0	# perfect L2 cache
+L2C_prefetch		   0	# L2 cache prefetches next line on miss
+L2C_size		 512	# L2 cache size in kbytes
+L2C_assoc		   4	# L2 cache associativity
+L2C_line_size		 128	# L2 cache line size
+L2C_ports		   1	# number of L2 cache ports
+L2C_tag_latency		   3	# L2 cache tag access delay
+L2C_tag_repeat		   1	# L2 cache tag access repeat rate
+L2C_data_latency	   5	# L2 cache data access delay
+L2C_data_repeat		   1	# L2 cache data access repeat rate
+L2C_mshr		   8	L2 cache miss status holding register size
+
+
+
+##### Uncached Buffer Parameters #####
+
+ubuftype		comb	# combining or nocombining buffer
+ubufsize		   8	# number of uncache buffer entries
+ubufflush		   1	# threshold to flush uncached buffer
+ubufentrysize		   8	# size of uncached buffer entry in 32 bit words
+
+
+
+##### Bus Parameters #####
+
+bus_frequency		   1	# bus frequency relative to CPU core
+bus_width		   8	# bus width in bytes
+bus_arbdelay		   1	# arbitration delay in cycles
+bus_turnaround		   1	# number of turnaround cycles
+bus_mindelay		   0	# minimum delay between start of transactions
+bus_critical		   1	# enable critical-word-first transfer
+bus_total_requests	   8	# number of outstanding split-transaction reqs.
+bus_cpu_requests	   4	# number of outstanding CPU requests (per CPU)
+bus_io_requests		   4	# number of outstanding I/O requests (per I/O)
+
+
+
+##### General I/O Parameters #####
+
+io_latency		   1	# latency of I/O device bus interface
+				# including PCI bridge and bus
+
+
+##### Realtime Clock Parameters ####
+
+rtc_start_date	   9/10/2000	# initial date of realtime clock
+rtc_start_time	    13:58:29	# initial time of realtime clock
+
+
+
+##### SCSI Controller Parameters #####
+
+numscsi			   1	# number of SCSI controllers per node
+ahc_scbs		  32	# number of control blocks on Adaptec cntrl.
+
+
+
+##### SCSI Bus Parameters #####
+
+scsi_frequency		  10	# SCSI bus frequency in MHz
+scsi_width		   2	# SCSI bus width in bytes
+scsi_arb_delay		  24	# SCSI bus arbitration delay in bus cycles
+scsi_bus_free		   8	# minimum SCSI bus free time in cycles
+scsi_req_delay		  13	# lumped delay to transfer a request in cycles
+scsi_timeout		10000	# SCSI bus timeout in cycles
+
+
+
+##### SCSI Disk Parameters #####
+
+numdisks		   1	# number disks per SCSI bus
+disk_params		<none>	# disk parameter file name
+disk_name    IBM/Ultrastar_9LP	# name of disk model
+disk_seek_single	 0.7	# single-track seek time
+disk_seek_av		 6.5	# average seek time
+disk_seek_full		14.0	# full stroke seek time
+disk_seek_method  disk_seek_curve	# method to model seek time
+				# disk_seek_none, disk_seek_const,
+				# disk_seek_line, disk_seek_curve
+disk_write_settle	 1.3	# write settle time
+disk_head_switch	0.85	# head switch time
+disk_cntl_ov		  40	# controller overhead in microseconds
+disk_rpm		7200	# rotational speed
+disk_cyl		8420	# number of cylinders
+disk_heads		  10	# number of heads
+disk_sect		 209	# number of sectors per track
+disk_cylinder_skew	  20	# cylinder skew in sectors
+disk_track_skew		  35	# track skew in sectors
+disk_request_q		  32	# request queue size
+disk_response_q		  32	# response queue size
+disk_cache_size		1024	# disk cache size in kbytes
+disk_cache_seg		  16	# number of cache segments
+disk_cache_write_seg	   2	# number of write segments
+disk_prefetch		   1	# enable prefetching
+disk_fast_write		   0	# enable fast writes
+disk_buffer_full	0.75	# buffer full ratio to disconnect
+disk_buffer_empty	0.75	# buffer empty ratio to reconnect
+
+
+
+##### Main Memory Controller Parameters #####
+
+mmc_sim_on		   1	# enable detailed memory simulation
+				# alternative name: mmc_sim
+				# alternative values: fixed, pipelined, detailed
+mmc_latency		  20	# fixed latency if detailed sim. is turned off
+mmc_frequency		   1	# memory controller frequency relative to CPU
+mmc_debug		   0	# enable debugging output
+mmc_collect_stats	   1	# collect statistics
+mmc_writebacks		   ?	# number of buffered writebacks
+				# default is numcpus + number of coherent I/Os
+
+
+### DRAM backend parameters
+
+dram_sim_on		   1	# enable detailed DRAM simulation
+dram_latency		  18	# fixed latency if detailed sim. is turned off
+dram_frequency		   1	# DRAM frequency relative to CPU
+dram_scheduler		   1	# enable detailed DRAM timing
+
+dram_debug		   0	# enable debug output
+dram_collect_stats	   1	# collect statistics
+dram_trace_on		   0	# enable trace collection
+dram_trace_max		   0	# set upper limit on number of trace items
+dram_trace_file	  dram_trace	# name of trace file
+
+dram_num_smcs		   4	# num. data buffers/multiplexers & data busses
+dram_num_jetways	   2	# number of data buffers/multiplexers
+dram_num_banks		  16	# number of physical DRAM banks
+dram_banks_per_chip	   2	# number of chip-internal banks
+dram_rd_busses		   4	# number of data busses
+
+dram_sa_bus_cycles	   1	# number of cycles of an address bus transfer
+dram_sd_bus_cycles	   1	# number of cycles of a data bus item transfer
+dram_sd_bus_width	  32	# width of data bus in bits
+
+dram_critical_word	   1	# enable critical-word-first transfer
+dram_bank_depth		  16	# size of request queue in SMC
+dram_interleaving	   0	# block/cacheline and cont/modulo
+dram_max_bwaiters	 256	# number of outstanding requests
+
+dram_hotrow_policy	   0	# open-row policy
+dram_width		  16	# width of DRAM chip = width of DRAM data bus
+dram_mini_access	  16	# minimum DRAM access size
+dram_block_size		 128	# block interleaving size
+
+dram_type		SDRAM	# type of DRAM (SDRAM or RDRAM)
+
+
+
+### SDRAM Parameters
+
+sdram_tCCD		1	# CAS to CAS delay
+sdram_tRRD		2	# bank to bank delay
+sdram_tRP		3	# precharge time
+sdram_tRAS		7	# RAS latency, row access time
+sdram_tRCD		3	# RAS to CAS delay
+sdram_tAA		3	# CAS latency, column access time
+sdram_tDAL		5	# data-in to precharge time
+sdram_tDPL		2	# data-in to active time
+sdram_tPACKET		1	# number of cycles to transfer one 'packet'
+
+sdram_row_size		512	# size of an open row in bytes
+sdram_row_hold_time	750000	# maximum time to keep row open
+sdram_refresh_delay	2048	# number of cycles for one refresh
+sdram_refresh_period	750000	# refresh period in cycles	
+
+
+
+### RDRAM Parameters
+
+rdram_tRC		28	# delay between ACT commands
+rdram_tRR		8	# delay between RD commands
+rdram_tRP		8	# delay between PRER and ACT command
+rdram_tCBUB1		4	# read to write command delay
+rdram_tCBUB2		8	# write to read command delay
+rdram_tRCD		7	# RAS to CAS delay
+rdram_tCAC		8	# CAS delay (ACT to data-out)
+rdram_tCWD		6	# CAS to write delay
+rdram_tPACKET		4	# number of cycles to transfer one packet
+
+rdram_row_size		512	# size of an open row in bytes
+rdram_row_hold_time	750000	# maximum time to keep row open
+rdram_refresh_delay	2048	# number of cycles for one refresh
+rdram_refresh_period	750000	# refresh periods in cycles
+
+

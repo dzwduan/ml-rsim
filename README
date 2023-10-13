@@ -1,0 +1,31 @@
+ML-RSIM/Lamix Release 5/25/2005
+
+Quick Installation:
+
+1. Configure lamix kernel
+   cd lamix/arch/lamix_ws/conf/
+   config LAMIX_WS
+
+2. Compile lamix
+   cd lamix/
+   make
+
+3. Compile simulator binary
+   cd bin/
+   make
+
+4. Cleaning up
+   cd bin/
+   make clobber
+   cd ..
+   cd lamix/
+   make clean_dist
+
+
+Directories:
+apps/		utilities and sample/test applications
+bin/		platform-specific simulator binaries
+doc/		documentation
+lamix/		Lamix kernel sources, binaries and libraries
+sim_mounts/	mount points for simulated file systems
+src/		simulator source code

@@ -1,0 +1,8 @@
+#!/bin/csh -f
+
+set prog=`basename $0`
+set prog_path=`dirname $0`
+set arch=`uname -s`
+
+echo Running $prog_path/$arch/$prog $*
+eval exec $prog_path/$arch/$prog $*

@@ -1,0 +1,25 @@
+Simulator source code
+
+
+Compile:
+	cd bin
+	make
+
+	Must first configure Lamix kernel
+
+
+Cleanup:
+	make clean
+	removes executables only
+	make clobber
+	removes object files and executables
+
+
+Directories:
+Bus/ 		system bus sources
+Caches/		cache and uncached buffer sources
+DRAM/		DRAM controller and chip model sources
+IO/		I/O device sources
+Memory/		memory controller sources
+Processor/	CPU core sources
+sim_main/	general simulator source code
